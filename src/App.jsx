@@ -76,7 +76,8 @@ function App() {
       return {
         ...prevState,
         selectedProjectId: undefined,
-        projects: prevState.projects.filter(project => project.id !== prevState.selectedProjectId)
+        projects: prevState.projects.filter(project => project.id !== prevState.selectedProjectId),
+        tasks: prevState.tasks.filter(task => task.projectId !== prevState.selectedProjectId)
       }
     })
   }
@@ -85,7 +86,7 @@ function App() {
   let content = <SelectProject
     project={project}
     onAddTask={handleAddTask}
-    onDeleteTask={handleDeleteTask} 
+    onDeleteTask={handleDeleteTask}
     tasks={projectState.tasks}
     onDelete={handleDeleteProject} />
 

@@ -4,6 +4,9 @@ export default function NewTask({ onAdd }) {
     const [enteredTask, setEnteredTask] = useState('')
 
     const handleAddClick = () => {
+        if (enteredTask.trim() === '') {
+            return;
+        }
         onAdd(enteredTask)
         setEnteredTask('')
     }
