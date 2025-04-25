@@ -1,13 +1,16 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 
-export default function NewTask({ onAdd }) {
+import { ProjectContext } from "../store/Project-context";
+
+export default function NewTask() {
     const [enteredTask, setEnteredTask] = useState('')
+    const { onAddTask } = useContext(ProjectContext)
 
     const handleAddClick = () => {
         if (enteredTask.trim() === '') {
             return;
         }
-        onAdd(enteredTask)
+        onAddTask(enteredTask)
         setEnteredTask('')
     }
     return (

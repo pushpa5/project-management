@@ -3,6 +3,7 @@ import NewProject from "./components/NewProject";
 import NoProject from "./components/NoProject";
 import SideMenu from "./components/SideMenu";
 import SelectProject from "./components/SelectedProject";
+import { ProjectContext } from "./store/Project-context";
 
 function App() {
   const [projectState, setProjectState] = useState({
@@ -83,12 +84,7 @@ function App() {
   }
 
   const project = projectState.projects?.find(item => item.id === projectState.selectedProjectId)
-  let content = <SelectProject
-    project={project}
-    onAddTask={handleAddTask}
-    onDeleteTask={handleDeleteTask}
-    tasks={projectState.tasks}
-    onDelete={handleDeleteProject} />
+  let content = <SelectProject project={project} onDelete={handleDeleteProject} />
 
   if (projectState.selectedProjectId === null) {
     content = <NewProject onAdd={newProjectHandler} onCancel={handleCancelProject} />
@@ -96,16 +92,23 @@ function App() {
     content = <NoProject onStartProjectClick={handleStartProject} />
   }
 
+  const taskCxt = {
+    tasks: projectState.tasks,
+    onAddTask: handleAddTask,
+    onDeleteTask: handleDeleteTask,
+  }
   return (
-    <main className="h-screen my-8h-screen my-8 flex gap-8">
-      <SideMenu
-        onStartProjectClick={handleStartProject}
-        projects={projectState.projects}
-        onSelect={handleProjectSelect}
-        selectedProjectId={projectState.selectedProjectId}
-      />
-      {content}
-    </main>
+    <ProjectContext.Provider value={taskCxt}>
+      <main className="h-screen my-8h-screen my-8 flex gap-8">
+        <SideMenu
+          onStartProjectClick={handleStartProject}
+          projects={projectState.projects}
+          onSelect={handleProjectSelect}
+          selectedProjectId={projectState.selectedProjectId}
+        />
+        {content}
+      </main>
+    </ProjectContext.Provider>
   );
 }
 
